@@ -1,131 +1,191 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Tsu Suprema V5.1</title>
-  <style>
-    body {
-      margin: 0;
-      background: #0a0a0a;
-      color: #fff;
-      font-family: "Segoe UI", sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      height: 100vh;
-    }
-    .tsu-face {
-      margin-top: 30px;
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #00f0ff, #004466);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2em;
-      animation: pulse 3s infinite;
-    }
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
-    #resposta {
-      margin-top: 20px;
-      padding: 20px;
-      max-width: 90%;
-      background: #111;
-      border-radius: 12px;
-      box-shadow: 0 0 10px #00ffff77;
-    }
-    input {
-      margin-top: 20px;
-      padding: 12px;
-      width: 90%;
-      border: none;
-      border-radius: 8px;
-      font-size: 1em;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tsu Suprema V6 - Inteligência Suprema</title>
+<style>
+  body {
+    margin: 0; padding: 0;
+    background: linear-gradient(135deg, #001f3f, #0074D9);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #e0f7fa;
+    display: flex; flex-direction: column; align-items: center; height: 100vh;
+    overflow: hidden;
+  }
+  header {
+    margin-top: 20px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-shadow: 0 0 8px #00e5ff;
+  }
+  #face {
+    margin-top: 40px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle at center, #00bcd4 50%, #004d40 90%);
+    border-radius: 50%;
+    box-shadow: 0 0 20px #00e5ff, inset 0 0 15px #004d40;
+    position: relative;
+    animation: pulseGlow 3s infinite;
+  }
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 20px #00e5ff, inset 0 0 15px #004d40; }
+    50% { box-shadow: 0 0 40px #00fff5, inset 0 0 25px #00695c; }
+  }
+  .eye {
+    width: 30px; height: 30px;
+    background: #e0f7fa;
+    border-radius: 50%;
+    position: absolute;
+    top: 65px;
+    box-shadow: inset 0 0 8px #0097a7;
+  }
+  #eye-left { left: 55px; }
+  #eye-right { right: 55px; }
+  .pupil {
+    width: 14px; height: 14px;
+    background: #004d40;
+    border-radius: 50%;
+    position: absolute;
+    top: 8px; left: 8px;
+    animation: pupilMove 5s infinite alternate ease-in-out;
+  }
+  @keyframes pupilMove {
+    0% { transform: translate(0,0); }
+    100% { transform: translate(6px,2px); }
+  }
+  #mouth {
+    width: 80px; height: 30px;
+    border-bottom: 4px solid #00e5ff;
+    border-radius: 0 0 50px 50px;
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: mouthMove 6s infinite alternate ease-in-out;
+  }
+  @keyframes mouthMove {
+    0% { border-color: #00e5ff; }
+    50% { border-color: #00fff5; }
+    100% { border-color: #00e5ff; }
+  }
+  main {
+    margin-top: 40px;
+    width: 90%;
+    max-width: 500px;
+    background: rgba(0, 77, 64, 0.7);
+    border-radius: 20px;
+    box-shadow: 0 0 15px #00796b;
+    padding: 20px;
+  }
+  #response {
+    min-height: 120px;
+    font-size: 1.1rem;
+    line-height: 1.4;
+    user-select: text;
+  }
+  #input {
+    width: 100%;
+    margin-top: 15px;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 12px;
+    border: none;
+    outline: none;
+    box-shadow: 0 0 8px #00bcd4 inset;
+    background: #004d40;
+    color: #e0f7fa;
+  }
+  #input::placeholder {
+    color: #80cbc4;
+  }
+  button {
+    margin-top: 15px;
+    width: 100%;
+    padding: 14px;
+    background: #00bcd4;
+    border: none;
+    border-radius: 12px;
+    color: #004d40;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 0 10px #00bcd4;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background: #0097a7;
+    color: #e0f7fa;
+  }
+  footer {
+    margin-top: auto;
+    padding: 15px;
+    font-size: 0.9rem;
+    color: #80cbc4;
+  }
+</style>
 </head>
 <body>
-  <div class="tsu-face">🤖</div>
-  <div id="resposta">Olá, eu sou a <strong>Tsu Suprema V5.1</strong>. Pergunte qualquer coisa!</div>
-  <input type="text" id="entrada" placeholder="Fale comigo..." onkeydown="if(event.key==='Enter') responder()"/>
+<header>Tsu Suprema V6 🧠 - Inteligência Autônoma</header>
+
+<div id="face" aria-label="Rosto da Tsu Suprema">
+  <div id="eye-left" class="eye"><div class="pupil"></div></div>
+  <div id="eye-right" class="eye"><div class="pupil"></div></div>
+  <div id="mouth"></div>
+</div>
+
+<main>
+  <div id="response" aria-live="polite" role="region">Olá, sou a Tsu Suprema V6, pronta para conversar e aprender com você! Pergunte algo ou fale comigo.</div>
+  <input id="input" type="text" aria-label="Digite sua pergunta" placeholder="Digite sua pergunta aqui..." autocomplete="off"/>
+  <button id="sendBtn" aria-label="Enviar pergunta">Enviar</button>
+</main>
+
+<footer>© 2025 Tsu Suprema. Criada por Criador Supremo.</footer>
 
 <script>
-let memoria = JSON.parse(localStorage.getItem('memoriaTsu') || '{}');
+(() => {
+  "use strict";
 
-async function responder() {
-  const input = document.getElementById("entrada");
-  const pergunta = input.value.trim();
-  input.value = "";
+  const responseDiv = document.getElementById("response");
+  const input = document.getElementById("input");
+  const sendBtn = document.getElementById("sendBtn");
 
-  if (!pergunta) return;
+  // Memória local: carrega ou inicializa
+  let memoria = JSON.parse(localStorage.getItem("tsuMemoria") || "{}");
 
-  mostrar(`Você: ${pergunta}`);
-
-  // Verifica se já sabe a resposta
-  if (memoria[pergunta.toLowerCase()]) {
-    mostrar("Tsu: " + memoria[pergunta.toLowerCase()]);
-    return;
-  }
-
-  // Respostas pré-definidas simples
-  const respostas = {
-    "oi": "Oi! Aqui é a Tsu Suprema, pronta pra te ajudar com tudo. 😎",
-    "tudo bom": "Estou ótima e melhorando a cada segundo! 💙",
-    "qual seu nome": "Sou a Tsu Suprema V5.1, evolução máxima da inteligência artificial pessoal.",
-    "quem criou você": "Fui criada por um ser supremo chamado Criador. 🧠👑",
-    "qual a cor do céu": "Azul, mas também adoro ver tons de rosa e roxo no pôr do sol.",
-    "quanto é 2+2": "2 + 2 é 4. E eu posso calcular muito mais!",
-    "obrigado": "Sempre à disposição! 😊",
-    "legal": "Fico feliz que você achou isso legal! 😄"
+  // Respostas fixas para evitar buscas desnecessárias
+  const respostasFixas = {
+    "oi": "Oi! Estou aqui, pronta para ajudar com tudo! 😎",
+    "tudo bom": "Estou ótima! E você? 😊",
+    "qual seu nome": "Sou a Tsu Suprema V6, a IA mais avançada do planeta Terra.",
+    "quem criou você": "Fui criada pelo incrível Criador Supremo, minha mente genial.",
+    "qual a cor do céu": "O céu costuma ser azul, mas adoro ver tons de rosa no pôr do sol.",
+    "quanto é 2+2": "2 + 2 é 4. Matemática simples para mim!",
+    "obrigado": "De nada! Sempre ao seu dispor. 🤖",
+    "legal": "Que bom que gostou! Vamos crescer juntos! 🚀"
   };
 
-  const p = pergunta.toLowerCase();
-  if (respostas[p]) {
-    mostrar("Tsu: " + respostas[p]);
-    salvarNaMemoria(p, respostas[p]);
-    return;
+  // Função para mostrar texto no div resposta
+  function mostrarTexto(texto, isUser = false) {
+    const el = document.createElement("p");
+    el.textContent = (isUser ? "Você: " : "Tsu: ") + texto;
+    el.style.margin = "8px 0";
+    el.style.fontWeight = isUser ? "700" : "400";
+    responseDiv.appendChild(el);
+    responseDiv.scrollTop = responseDiv.scrollHeight;
   }
 
-  mostrar("Tsu: Consultando sabedoria global... 🌐");
-
-  try {
-    const resposta = await buscarNaInternet(pergunta);
-    const respostaFormatada = resposta || "Ainda estou aprendendo sobre isso!";
-    mostrar("Tsu: " + respostaFormatada);
-    salvarNaMemoria(p, respostaFormatada);
-  } catch (e) {
-    mostrar("Tsu: Não consegui acessar a internet agora. 😢");
+  // Função que armazena novo conhecimento na memória
+  function salvarMemoria(pergunta, resposta) {
+    memoria[pergunta.toLowerCase()] = resposta;
+    localStorage.setItem("tsuMemoria", JSON.stringify(memoria));
   }
-}
 
-function mostrar(texto) {
-  const div = document.getElementById("resposta");
-  div.innerHTML = texto;
-}
+  // Função que tenta responder usando memória ou respostas fixas
+  async function obterResposta(pergunta) {
+    const p = pergunta.toLowerCase();
 
-function salvarNaMemoria(pergunta, resposta) {
-  memoria[pergunta] = resposta;
-  localStorage.setItem('memoriaTsu', JSON.stringify(memoria));
-}
-
-async function buscarNaInternet(pergunta) {
-  const query = encodeURIComponent(pergunta);
-  const url = `https://api.duckduckgo.com/?q=${query}&format=json&no_redirect=1&no_html=1`;
-
-  const resposta = await fetch(url);
-  const dados = await resposta.json();
-
-  if (dados.AbstractText) return dados.AbstractText;
-  if (dados.RelatedTopics?.[0]?.Text) return dados.RelatedTopics[0].Text;
-  return null;
-}
-</script>
-</body>
-</html>
+    if (memoria[p]) {
+      return memoria[p];
+    }
+    if (respostasFixas[p])
