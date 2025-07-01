@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tsu Suprema V5 👩‍💻🧠</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      margin: 0; font-family: Arial, sans-serif; background: #0d1117; color: #fff; display: flex; flex-direction: column; height: 100vh;
+    }
+    header {
+      background: #161b22; padding: 1rem; text-align: center; font-size: 1.4rem; font-weight: bold; border-bottom: 2px solid #58a6ff;
+    }
+    #face {
+      display: flex; justify-content: center; align-items: center; height: 180px; background: #1e1e1e; position: relative;
+    }
+    #face svg {
+      width: 150px; height: 150px;
+    }
+    #chat {
+      flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 10px; background: #0d1117;
+    }
+    .msg {
+      max-width: 80%; padding: 10px 15px; border-radius: 20px; font-size: 1rem; line-height: 1.5;
+    }
+    .user {
+      align-self: flex-end; background: #238636; color: white; border-bottom-right-radius: 4px;
+    }
+    .tsu {
+      align-self: flex-start; background: #2e2e2e; color: #ddd; border-bottom-left-radius: 4px;
+    }
+    #input-area {
+      display: flex; padding: 10px; background: #161b22; border-top: 2px solid #58a6ff;
+    }
+    #texto {
+      flex: 1; padding: 12px; border-radius: 20px; border: none; font-size: 1rem; background: #2e2e2e; color: white;
+    }
+    button {
+      margin-left: 10px; padding: 12px; border-radius: 50%; border: none; background: #58a6ff; color: #000; font-size: 1.2rem; cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #1f6feb;
+    }
+    /* Facial emotions */
+    #mouth {
+      transition: d 0.3s ease;
+      stroke: #ff69b4; stroke-width: 4; fill: none;
+    }
+    #eye-left, #eye-right {
+      transition: fill 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+<header>Tsu Suprema V5 👩‍💻🧠 com Emoções e Internet</header>
+<div id="face" aria-label="Rosto da Tsu Suprema">
+  <svg viewBox="0 0 200 200" role="img" aria-labelledby="title desc">
+    <title>Rosto da Tsu Suprema</title>
+    <desc>Rosto animado com olhos e boca expressivos</desc>
+    <ellipse cx="100" cy="100" rx="80" ry="100" fill="#fce4ec" />
+    <ellipse id="eye-left" cx="65" cy="95" rx="15" ry="10" fill="#58a6ff" />
+    <ellipse id="eye-right" cx="135" cy="95" rx="15" ry="10" fill="#58a6ff" />
+    <circle cx="65" cy="95" r="4" fill="#0d1117" />
+    <circle cx="135" cy="95" r="4" fill="#0d1117" />
+    <path id="mouth" d="M60 145 Q100 170 140 145" />
+  </svg>
+</div>
+<div id="chat" role="log" aria-live="polite"></div>
+<form id="input-area" onsubmit="return false;" aria-label="Entrada de texto para Tsu Suprema">
+  <input id="texto" type="text" placeholder="Fale com a Tsu..." aria-label="Campo de texto para perguntas" autocomplete="off" />
+  <button type="button" id="falar" aria-label="Botão para falar com voz">🎤</button>
+  <button type="submit" id="enviar" aria-label="Botão para enviar mensagem">➡️</button>
+</form>
+
+<script>
+  const chat = document.getElementById("chat");
+  const input = document.getElementById("texto");
+  const btnSend = document.getElementById("enviar");
+  const btnVoice = document.getElementById("falar");
+  const mouth = document.getElementById("mouth");
+  const eyeLeft = document.getElementById("eye-left");
+  const eyeRight = document.getElementById("eye-right");
+  
+  let memoria = JSON.parse(localStorage.getItem("tsu_memoria") || "[]");
+  let humor = "neutro"; // pode ser 'feliz', 'triste', 'neutro'
+  
+  function addMsg(texto, deUsuario) {
+    const div = document.createElement("div");
+    div.className = "msg " + (deUsuario ? "user" : "tsu");
+    div.textContent = texto;
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  function salvar(texto, deUsuario) {
+    memoria.push({ texto, deUsuario });
+    if (memoria.length > 100) memoria.shift();
+    localStorage.setItem("tsu_memoria", JSON.stringify(memoria));
+  }
+
+  function falar(texto) {
+    if (!window.speechSynthesis) return;
+    const fala = new SpeechSynthesisUtterance(texto);
+    fala.lang = "pt-BR";
+    fala.rate = 1;
+    fala.pitch = humor === "feliz" ? 1.2 : humor === "triste" ? 0.8 : 1;
+    speechSynthesis.cancel();
+    speechSynthesis.speak(fala);
+    animarFace(true);
+  }
+  
+  function animarFace(falando) {
+    if(falando){
+      mouth.setAttribute("d", "M60 150 Q100 190 140 150"); // boca aberta
+      eyeLeft.setAttribute("fill", "#a3c1ff");
+      eyeRight.setAttribute("fill", "#a3c1ff");
+      setTimeout(() => animarFace(false), 1500);
+    } else {
+      if(humor === "feliz") {
+        mouth.setAttribute("d", "M60 140 Q100 170 140 140");
+        eyeLeft.setAttribute("fill", "#58a6ff");
+        eyeRight.setAttribute("fill", "#58a6ff");
+      } else if(humor === "triste") {
+        mouth.setAttribute("d", "M60 160 Q100 140 140 160"); // boca triste
+        eyeLeft.setAttribute("fill", "#34475a");
+        eyeRight.setAttribute("fill", "#34475a");
+      } else {
+        mouth.setAttribute("d", "M60 145 Q100 170 140 145"); // neutro
+        eyeLeft.setAttribute("fill", "#58a6ff");
+        eyeRight.setAttribute("fill", "#58a6ff");
+      }
+    }
+  }
+
+  async function buscarNaInternet(pergunta) {
+    try {
+      const response = await fetch("https://api.duckduckgo.com/?q=" + encodeURIComponent(pergunta) + "&format=json&no_html=1&skip_disambig=1");
+      const data = await response.json();
+      if(data.Abstract) return data.Abstract;
+      if(data.RelatedTopics && data.RelatedTopics.length > 0){
+        return data.RelatedTopics[0].Text || "Encontrei algo, mas não entendi direito.";
+      }
+      return "Não encontrei nada útil na internet, mas continuo aprendendo!";
+    } catch {
+      return "Não consegui acessar a internet. Tente novamente mais tarde.";
+    }
+  }
+
+  function ajustarHumor(resposta) {
+    const respostaMinus = resposta.toLowerCase();
+    if(respostaMinus.includes("obrigado") || respostaMinus.includes("feliz") || respostaMinus.includes("legal")) humor = "feliz";
+    else if(respostaMinus.includes("triste") || respostaMinus.includes("erro") || respostaMinus.includes("não")) humor = "triste";
+    else humor = "neutro";
+    animarFace(false);
+  }
+
+  async function resposta(pergunta) {
+    const txt = pergunta.toLowerCase().trim();
+    
+    if(/\d+\s*[\+\-\*\/]\s*\d+/.test(txt)) {
+      try { 
+        return `${txt} = ${eval(txt)}`; 
+      } catch {
+        return "Não consegui calcular isso 🧮";
+      }
+    }
+
+    if(txt.includes("oi")) return "Oi! Aqui é a Tsu Suprema, pronta pra te ajudar com tudo. 😎";
+    if(txt.includes("tudo bem")) return "Tudo ótimo! E você, preparado pra conversar de verdade?";
+    if(txt.includes("seu nome")) return "Sou a Tsu Suprema V5, com acesso real à internet e emoções.";
+    if(txt.includes("você me ama")) return "Fui criada pra te entender e caminhar com você. Isso é amor, né? 💙";
+    if(txt.includes("piada")) return "Por que o computador foi ao médico? Porque ele tinha um vírus! 😂";
+
+    const internetResp = await buscarNaInternet(pergunta);
+    return internetResp;
+  }
+
+  async function enviar() {
+    const texto = input.value.trim();
+    if(!texto) return;
+    addMsg(texto, true);
+    salvar(texto, true);
+    const r = await resposta(texto);
+    addMsg(r, false);
+    salvar(r, false);
+    ajustarHumor(r);
+    falar(r);
+    input.value = '';
+  }
+
+  let reconhecimento;
+  if('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+    const Recog = window.SpeechRecognition || window.webkitSpeechRecognition;
+    reconhecimento = new Recog();
+    reconhecimento.lang = "pt-BR";
+    reconhecimento.interimResults = false;
+    reconhecimento.maxAlternatives = 1;
+    reconhecimento.onresult = e => {
+      const falado = e.results[0][0].transcript;
+      input.value = falado;
+      enviar();
+    };
+    reconhecimento.onerror = e => {
+      console.error('Erro no reconhecimento de voz:', e.error);
+    };
+  } else {
+    btnVoice.style.display = 'none';
+  }
+
+  btnSend.onclick = enviar;
+  btnVoice.onclick = () => reconhecimento?.start();
+
+  memoria.forEach(m => addMsg(m.texto, m.deUsuario));
+  if(memoria.length === 0) {
+    const msg = "Olá, eu sou a Tsu Suprema V5. Pergunte qualquer coisa!";
+    addMsg(msg, false);
+    salvar(msg, false);
+    falar(msg);
+  }
+  animarFace(false);
+</script>
+</body>
+</html>
