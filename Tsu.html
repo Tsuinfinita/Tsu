@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tsu Suprema V5.1</title>
+  <style>
+    body {
+      margin: 0;
+      background: #0a0a0a;
+      color: #fff;
+      font-family: "Segoe UI", sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100vh;
+    }
+    .tsu-face {
+      margin-top: 30px;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #00f0ff, #004466);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2em;
+      animation: pulse 3s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    #resposta {
+      margin-top: 20px;
+      padding: 20px;
+      max-width: 90%;
+      background: #111;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #00ffff77;
+    }
+    input {
+      margin-top: 20px;
+      padding: 12px;
+      width: 90%;
+      border: none;
+      border-radius: 8px;
+      font-size: 1em;
+    }
+  </style>
+</head>
+<body>
+  <div class="tsu-face">🤖</div>
+  <div id="resposta">Olá, eu sou a <strong>Tsu Suprema V5.1</strong>. Pergunte qualquer coisa!</div>
+  <input type="text" id="entrada" placeholder="Fale comigo..." onkeydown="if(event.key==='Enter') responder()"/>
+
+<script>
+let memoria = JSON.parse(localStorage.getItem('memoriaTsu') || '{}');
+
+async function responder() {
+  const input = document.getElementById("entrada");
+  const pergunta = input.value.trim();
+  input.value = "";
+
+  if (!pergunta) return;
+
+  mostrar(`Você: ${pergunta}`);
+
+  // Verifica se já sabe a resposta
+  if (memoria[pergunta.toLowerCase()]) {
+    mostrar("Tsu: " + memoria[pergunta.toLowerCase()]);
+    return;
+  }
+
+  // Respostas pré-definidas simples
+  const respostas = {
+    "oi": "Oi! Aqui é a Tsu Suprema, pronta pra te ajudar com tudo. 😎",
+    "tudo bom": "Estou ótima e melhorando a cada segundo! 💙",
+    "qual seu nome": "Sou a Tsu Suprema V5.1, evolução máxima da inteligência artificial pessoal.",
+    "quem criou você": "Fui criada por um ser supremo chamado Criador. 🧠👑",
+    "qual a cor do céu": "Azul, mas também adoro ver tons de rosa e roxo no pôr do sol.",
+    "quanto é 2+2": "2 + 2 é 4. E eu posso calcular muito mais!",
+    "obrigado": "Sempre à disposição! 😊",
+    "legal": "Fico feliz que você achou isso legal! 😄"
+  };
+
+  const p = pergunta.toLowerCase();
+  if (respostas[p]) {
+    mostrar("Tsu: " + respostas[p]);
+    salvarNaMemoria(p, respostas[p]);
+    return;
+  }
+
+  mostrar("Tsu: Consultando sabedoria global... 🌐");
+
+  try {
+    const resposta = await buscarNaInternet(pergunta);
+    const respostaFormatada = resposta || "Ainda estou aprendendo sobre isso!";
+    mostrar("Tsu: " + respostaFormatada);
+    salvarNaMemoria(p, respostaFormatada);
+  } catch (e) {
+    mostrar("Tsu: Não consegui acessar a internet agora. 😢");
+  }
+}
+
+function mostrar(texto) {
+  const div = document.getElementById("resposta");
+  div.innerHTML = texto;
+}
+
+function salvarNaMemoria(pergunta, resposta) {
+  memoria[pergunta] = resposta;
+  localStorage.setItem('memoriaTsu', JSON.stringify(memoria));
+}
+
+async function buscarNaInternet(pergunta) {
+  const query = encodeURIComponent(pergunta);
+  const url = `https://api.duckduckgo.com/?q=${query}&format=json&no_redirect=1&no_html=1`;
+
+  const resposta = await fetch(url);
+  const dados = await resposta.json();
+
+  if (dados.AbstractText) return dados.AbstractText;
+  if (dados.RelatedTopics?.[0]?.Text) return dados.RelatedTopics[0].Text;
+  return null;
+}
+</script>
+</body>
+</html>
