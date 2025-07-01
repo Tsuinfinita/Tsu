@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tsu Suprema Ultra Top 🌟</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+  body {
+    margin: 0; padding: 0;
+    background: linear-gradient(135deg, #8e2de2, #4a00e0);
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+    display: flex; flex-direction: column; align-items: center;
+    min-height: 100vh;
+  }
+  header {
+    margin: 30px 0 10px 0;
+    font-size: 2.8rem;
+    font-weight: 700;
+    text-shadow: 0 3px 10px rgba(0,0,0,0.4);
+  }
+  #avatar {
+    position: relative;
+    width: 230px;
+    height: 300px;
+    background: #ffe3f1;
+    border-radius: 140px 140px 110px 110px / 160px 160px 120px 120px;
+    box-shadow:
+      0 12px 20px rgba(0,0,0,0.25),
+      inset 0 8px 15px #d1a7b8;
+    overflow: visible;
+    margin-bottom: 30px;
+  }
+  /* Hair */
+  #hair {
+    position: absolute;
+    top: -50px; left: 10px;
+    width: 210px; height: 160px;
+    background: linear-gradient(135deg, #2a1a3b 0%, #6a3e8a 80%);
+    border-radius: 120px / 90px;
+    box-shadow: inset 0 6px 15px #583774;
+    animation: hairFlow 10s ease-in-out infinite alternate;
+  }
+  @keyframes hairFlow {
+    0% { transform: rotate(0deg);}
+    100% { transform: rotate(3deg);}
+  }
+  /* Face */
+  #face {
+    position: absolute;
+    top: 40px; left: 20px;
+    width: 190px; height: 240px;
+    background: #fff0f8;
+    border-radius: 90px / 110px;
+    box-shadow:
+      0 5px 12px rgba(0,0,0,0.15),
+      inset 0 8px 18px #ffd0e6;
+  }
+  /* Eyes */
+  .eye {
+    position: absolute;
+    top: 90px;
+    width: 50px; height: 32px;
+    background: white;
+    border-radius: 40% / 100%;
+    box-shadow: inset 0 0 16px #ccc;
+    overflow: hidden;
+  }
+  .eye.left { left: 38px; }
+  .eye.right { right: 38px; }
+  .pupil {
+    position: absolute;
+    top: 6px; left: 18px;
+    width: 16px; height: 16px;
+    background: #1b1135;
+    border-radius: 50%;
+    animation: pupilMove 7s ease-in-out infinite alternate;
+  }
+  @keyframes pupilMove {
+    0% { transform: translate(0, 0);}
+    100% { transform: translate(8px, 3px);}
+  }
+  /* Eyelashes */
+  .lash {
+    position: absolute;
+    top: 85px;
+    width: 6px; height: 14px;
+    background: #553d70;
+    border-radius: 4px;
+  }
+  .lash.left { left: 18px; transform: rotate(-22deg);}
+  .lash.right { right: 18px; transform: rotate(22deg);}
+  /* Nose */
+  #nose {
+    position: absolute;
+    top: 150px; left: 50%;
+    transform: translateX(-50%);
+    width: 16px; height: 16px;
+    background: #fdd7e3;
+    border-radius: 40% / 100%;
+    box-shadow: inset 0 2px 3px #a16d7a;
+  }
+  /* Mouth */
+  #mouth {
+    position: absolute;
+    top: 195px; left: 50%;
+    transform: translateX(-50%);
+    width: 80px; height: 28px;
+    background: linear-gradient(180deg, #ff6a9c 40%, #b02c65 100%);
+    border-radius: 0 0 80px 80px / 0 0 90px 90px;
+    box-shadow: inset 0 4px 12px #8e2552;
+    animation: mouthPulse 6s ease-in-out infinite alternate;
+  }
+  @keyframes mouthPulse {
+    0%, 100% { background: linear-gradient(180deg, #ff6a9c 40%, #b02c65 100%);}
+    50% { background: linear-gradient(180deg, #ff91b4 40%, #ca497c 100%);}
+  }
+  /* Blush */
+  #blush-left, #blush-right {
+    position: absolute;
+    top: 175px;
+    width: 44px; height: 22px;
+    background: radial-gradient(circle at center, #f79eb1 40%, transparent 80%);
+    border-radius: 50%;
+    opacity: 0.65;
+  }
+  #blush-left { left: 22px; }
+  #blush-right { right: 22px; }
+
+  /* Chat container */
+  main {
+    width: 92%;
+    max-width: 640px;
+    background: rgba(255 255 255 / 0.12);
+    border-radius: 28px;
+    box-shadow: 0 0 26px rgba(0,0,0,0.35);
+    padding: 28px 32px;
+    color: #fff;
+    font-size: 1.2rem;
+    user-select: text;
+    display: flex;
+    flex-direction: column;
+  }
+  #chat-log {
+    flex: 1;
+    min-height: 320px;
+    max-height: 420px;
+    overflow-y: auto;
+    margin-bottom: 22px;
+  }
+  .message {
+    margin-bottom: 18px;
+  }
+  .user-msg {
+    text-align: right;
+    color: #ffcc77;
+    font-weight: 700;
+  }
+  .tsu-msg {
+    text-align: left;
+    color: #ffc6ff;
+    font-style: italic;
+  }
+  #input-area {
+    display: flex;
+    gap: 14px;
+  }
+  #input-text {
+    flex: 1;
+    padding: 16px 20px;
+    border-radius: 16px;
+    border: none;
+    font-size: 1.2rem;
+    outline: none;
+    background: rgba(255 255 255 / 0.35);
+    color: #222;
+    box-shadow: 0 0 16px rgba(255 255 255 / 0.7) inset;
+    transition: background-color 0.35s ease;
+  }
+  #input-text::placeholder {
+    color: rgba(34, 34, 34, 0.55);
+  }
+  #input-text:focus {
+    background: rgba(255 255 255 / 0.5);
+  }
+  #btn-send {
+    background: #ff3f7e;
+    border: none;
+    border-radius: 16px;
+    font-weight: 800;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 0 28px #ff3f7e;
+    padding: 0 28px;
+    transition: background-color 0.35s ease;
+  }
+  #btn-send:hover {
+    background: #ff1a62;
+  }
+  #btn-voice {
+    background: #ff1a62;
+    border: none;
+    border-radius: 16px;
+    font-weight: 800;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 0 28px #ff1a62;
+    padding: 0 22px;
+    transition: background-color 0.35s ease;
+  }
+  #btn-voice.active {
+    background: #d80047;
+    box-shadow: 0 0 42px #d80047;
+  }
+  #btn-voice:hover {
+    background: #d80047;
+  }
+  footer {
+    margin-top: 48px;
+    font-size: 1rem;
+    color: #ffc6ffcc;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<header>Tsu Suprema Ultra Top 🌟</header>
+
+<div id="avatar" aria-label="Avatar humanoide da Tsu Suprema Ultra Top">
+  <div id="hair"></div>
+  <div id="face">
+    <div class="eye left" role="img" aria-label="Olho esquerdo">
+      <div class="pupil"></div>
+    </div>
+    <div class="eye right" role="img" aria-label="Olho direito">
+      <div class="pupil"></div>
+    </div>
+    <div class="lash left"></div>
+    <div class="lash right"></div>
+    <div id="nose" aria-label="Nariz"></div>
+    <div id="mouth" aria-label="Boca sorridente"></div>
+    <div id="blush-left"></div>
+    <div id="blush-right"></div>
+  </div>
+</div>
+
+<main>
+  <div id="chat-log" role="log" aria-live="polite" aria-relevant="additions"></div>
+  <div id="input-area">
+    <input type="text" id="input-text" placeholder="Fale comigo ou digite sua pergunta..." aria-label="Entrada de texto" autocomplete="off" />
+    <button id="btn-send" aria-label="Enviar mensagem">Enviar</button>
+    <button id="btn-voice" aria-label="Ativar reconhecimento de voz">&#127908;</button>
+  </div>
+</main>
+
+<footer>© 2025 Tsu Suprema Ultra Top - Criador Supremo 💖</footer>
+
+<script>
+(() => {
+  'use strict';
+
+  const chatLog = document.getElementById('chat-log');
+  const inputText = document.getElementById('input-text');
+  const btnSend = document.getElementById('btn-send');
+  const btnVoice = document.getElementById('btn-voice');
+
+  // Memória local para aprendizado contínuo
+  let memoria = JSON.parse(localStorage.getItem('tsuMemoriaUltraTop') || '{}');
+
+  // Função para adicionar mensagem no chat
+  function addMessage(text, sender) {
+    const div = document.createElement('div');
+    div.classList.add('message');
+    div.classList.add(sender === 'user' ? 'user-msg' : 'tsu-msg');
+    div.textContent = text;
+    chatLog.appendChild(div);
+    chatLog.scrollTop = chatLog.scrollHeight;
+  }
+
+  // Busca na internet via DuckDuckGo API
+  async function buscarInternet(query) {
+    const url = `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_redirect=1`;
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      if(data.AbstractText && data.AbstractText.length > 5){
+        return data.AbstractText;
+      }
+      if(data.RelatedTopics && data.RelatedTopics.length > 0){
+        for(const topic of data.RelatedTopics){
+          if(topic.Text) return topic.Text;
+          if(topic.Topics && topic.Topics.length > 0) return topic.Topics[0].Text;
+        }
+      }
+      return "Ainda não sei a resposta exata, mas vou aprender com você!";
+    } catch(e) {
+      return "Erro ao buscar na internet. Tente novamente.";
+    }
+  }
+
+  // Responder usuário
+  async function responder(pergunta) {
+    addMessage(pergunta, 'user');
+    addMessage('Pensando...', 'tsu');
+
+    // Simula delay para pensar
+    await new Promise(r => setTimeout(r, 1200));
+
+    // Tenta responder pela memória local
+    if(memoria[pergunta]){
+      chatLog.lastChild.textContent = memoria[pergunta];
+      return;
+    }
+
+    // Se não tem na memória, busca na internet
+    const resposta = await buscarInternet(pergunta);
+
+    // Atualiza mensagem de pensando para resposta
+    chatLog.lastChild.textContent = resposta;
+
+    // Salva no aprendizado
+    memoria[pergunta] = resposta;
+    localStorage.setItem('tsuMemoriaUltraTop', JSON.stringify(memoria));
+  }
+
+  btnSend.addEventListener('click', () => {
+    const texto = inputText.value.trim();
+    if(texto) {
+      responder(texto);
+      inputText.value = '';
+      inputText.focus();
+    }
+  });
+
+  inputText.addEventListener('keydown', e => {
+    if(e.key === 'Enter'){
+      btnSend.click();
+    }
+  });
+
+  // Voz: fala com SpeechSynthesis e reconhece com SpeechRecognition (Chrome)
+  const synth = window.speechSynthesis;
+  let recognizing = false;
+  let recognition;
+
+  if ('SpeechRecognition' in window || 'webkitSpeech
