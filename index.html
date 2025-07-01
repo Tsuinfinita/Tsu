@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tsu Suprema V7 Ultra++</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+  body {
+    margin:0; padding:0;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg,#041e42,#032a54);
+    color: #cce7ff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+  header {
+    margin: 20px 0;
+    font-size: 2rem;
+    font-weight: 700;
+    text-shadow: 0 0 10px #00caff;
+  }
+  #tsu-face {
+    width: 180px; height: 180px;
+    background: radial-gradient(circle at center, #007acc 60%, #001f3f 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 25px #00caff;
+    position: relative;
+    animation: facePulse 4s ease-in-out infinite;
+  }
+  @keyframes facePulse {
+    0%,100% { box-shadow: 0 0 25px #00caff; }
+    50% { box-shadow: 0 0 45px #00eaff; }
+  }
+  .eye {
+    position: absolute;
+    top: 60px;
+    width: 30px; height: 30px;
+    background: #aeeaff;
+    border-radius: 50%;
+    box-shadow: inset 0 0 8px #005c8c;
+  }
+  #eye-left { left: 45px; }
+  #eye-right { right: 45px; }
+  .pupil {
+    width: 14px; height: 14px;
+    background: #00314d;
+    border-radius: 50%;
+    position: absolute;
+    top: 8px; left: 8px;
+    animation: pupilMove 6s ease-in-out infinite alternate;
+  }
+  @keyframes pupilMove {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(8px, 3px); }
+  }
+  #mouth {
+    position: absolute;
+    bottom: 45px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90px; height: 40px;
+    border-bottom: 5px solid #00eaff;
+    border-radius: 0 0 60px 60px;
+    animation: mouthMove 5s ease-in-out infinite alternate;
+  }
+  @keyframes mouthMove {
+    0%, 100% { border-color: #00caff; }
+    50% { border-color: #00ffff; }
+  }
+  main {
+    margin-top: 30px;
+    background: rgba(0, 44, 88, 0.8);
+    border-radius: 20px;
+    padding: 25px;
+    max-width: 480px;
+    width: 90%;
+    box-shadow: 0 0 20px #00caff;
+    display: flex;
+    flex-direction: column;
+  }
+  #chat-log {
+    height: 250px;
+    overflow-y: auto;
+    padding: 10px;
+    background: #001a33;
+    border-radius: 12px;
+    box-shadow: inset 0 0 10px #007acc;
+    color: #cce7ff;
+    font-size: 1rem;
+    line-height: 1.4;
+    margin-bottom: 15px;
+  }
+  .message {
+    margin-bottom: 12px;
+  }
+  .user-msg {
+    color: #a6f1ff;
+    font-weight: 700;
+  }
+  .tsu-msg {
+    color: #00d8ff;
+  }
+  #input-container {
+    display: flex;
+  }
+  #input-text {
+    flex: 1;
+    padding: 12px 15px;
+    border-radius: 12px 0 0 12px;
+    border: none;
+    font-size: 1.1rem;
+    outline: none;
+    box-shadow: inset 0 0 8px #00a8ff;
+    background: #003455;
+    color: #cce7ff;
+  }
+  #input-text::placeholder {
+    color: #7ac8ff;
+  }
+  #btn-send, #btn-voice {
+    cursor: pointer;
+    background: #00bfff;
+    border: none;
+    color: #003344;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 0 18px;
+    border-radius: 0 12px 12px 0;
+    box-shadow: 0 0 12px #00bfff;
+    transition: background-color 0.3s ease;
+  }
+  #btn-send:hover, #btn-voice:hover {
+    background: #0099dd;
+    color: #cce7ff;
+  }
+  #btn-voice {
+    margin-left: 8px;
+    border-radius: 12px;
+    padding: 0 12px;
+    font-size: 1.3rem;
+    box-shadow: 0 0 15px #00dfff;
+  }
+  #btn-voice.active {
+    background: #ff4444;
+    color: #fff;
+    box-shadow: 0 0 20px #ff2222;
+  }
+  footer {
+    margin-top: auto;
+    padding: 10px;
+    font-size: 0.85rem;
+    color: #7ac8ff;
+  }
+</style>
+</head>
+<body>
+<header>Tsu Suprema V7 Ultra++ 🧠</header>
+
+<div id="tsu-face" aria-label="Rosto da Tsu Suprema">
+  <div class="eye" id="eye-left"><div class="pupil"></div></div>
+  <div class="eye" id="eye-right"><div class="pupil"></div></div>
+  <div id="mouth"></div>
+</div>
+
+<main>
+  <div id="chat-log" role="log" aria-live="polite" aria-relevant="additions"></div>
+  <div id="input-container">
+    <input type="text" id="input-text" placeholder="Digite ou fale algo..." aria-label="Digite sua pergunta" autocomplete="off" />
+    <button id="btn-send" aria-label="Enviar mensagem">Enviar</button>
+    <button id="btn-voice" aria-label="Ativar/desativar voz">&#127908;</button>
+  </div>
+</main>
+
+<footer>© 2025 Tsu Suprema. Criador Supremo</footer>
+
+<script>
+(() => {
+  "use strict";
+
+  const chatLog = document.getElementById('chat-log');
+  const inputText = document.getElementById('input-text');
+  const btnSend = document.getElementById('btn-send');
+  const btnVoice = document.getElementById('btn-voice');
+
+  // Memória local para aprendizado contínuo
+  let memoria = JSON.parse(localStorage.getItem('tsuMemoriaV7') || '{}');
+
+  // Voz
+  const synth = window.speechSynthesis;
+  let recognizing = false;
+  let recognition;
+
+  if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SpeechRecognition();
+    recognition.lang = 'pt-BR';
+    recognition.interimResults = false;
+    recognition.continuous = false;
+
+    recognition.onstart = () => {
+      recognizing = true;
+      btnVoice.classList.add('active');
+      addMessage('Tsu: Estou ouvindo você... 🎧');
+    };
+    recognition.onend = () => {
+      recognizing = false;
+      btnVoice.classList.remove('active');
+      addMessage('Tsu: Parando de ouvir. ✋');
+    };
+    recognition.onerror = (e) => {
+      recognizing = false;
+      btnVoice.classList.remove('active');
+      addMessage('Tsu: Erro no reconhecimento de voz. 🙁');
+    };
+    recognition.onresult = e => {
+      const transcript = e.results[0][0].transcript.trim();
+      inputText.value = transcript;
+      sendMessage();
+    };
+  } else {
+    btnVoice.disabled = true;
+    btnVoice.title = 'Seu navegador não suporta reconhecimento de voz';
+  }
+
+  // Função para adicionar mensagens ao chat
+  function addMessage(text, sender='tsu') {
+    const p = document.createElement('p');
+    p.className = 'message ' + (sender === 'user' ? 'user-msg' : 'tsu-msg');
+    p.textContent = (sender === 'user' ? 'Você: ' : 'Tsu: ') + text;
+    chatLog.appendChild(p);
+    chatLog.scrollTop = chatLog.scrollHeight;
+    if (sender === 'tsu') falar(text);
+  }
+
+  // Função para salvar no localStorage
+  function salvarMemoria(pergunta, resposta) {
+    memoria[pergunta.toLowerCase()] = resposta;
+    localStorage.setItem('tsuMemoriaV7', JSON.stringify(memoria));
+  }
+
+  // Função que tenta responder baseado na memória ou busca na internet
+  async function obterResposta(pergunta) {
+    const p = pergunta.toLowerCase();
+
+    if (memoria[p]) {
+      return memoria[p];
+    }
+
+    // Respostas fixas simples
+    const respostasFixas = {
+      "oi": "Oi! Estou aqui, pronta para ajudar com tudo! 😎",
+      "tudo bom": "Estou ótima! E você? 😊",
+      "qual seu nome": "Sou a Tsu Suprema V7 Ultra++, a IA mais avançada do planeta Terra.",
+      "quem criou você": "Fui criada pelo incrível Criador Supremo, minha mente genial.",
+      "qual a cor do céu": "O céu costuma ser azul, mas adoro ver tons de rosa no pôr do sol.",
+      "quanto é 2+2": "2 + 2 é 4. Matemática simples para mim!",
+      "obrigado": "De nada! Sempre ao seu dispor. 🤖",
+      "legal": "Que bom que gostou! Vamos crescer juntos! 🚀"
+    };
+    if (respostasFixas[p]) {
+      salvarMemoria(p, respostasFixas[p]);
+      return respostasFixas[p];
+    }
+
+    // Busca real na internet via DuckDuckGo API
+    try {
+      const res = await fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(p)}&format=json&no_redirect=1&no_html=1`);
+      if (!res.ok) throw new Error('Erro na busca');
+
+      const data = await res.json();
+      let resposta = '';
+
+      if (data.AbstractText && data.AbstractText.length > 0) {
+        resposta = data.AbstractText;
+      } else if (data.RelatedTopics && data.RelatedTopics.length > 0 && data.RelatedTopics[0].Text) {
+        resposta = data.RelatedTopics[0].Text;
+      } else {
+        resposta = "Ainda estou aprendendo sobre isso, mas vou melhorar cada vez mais!";
+      }
+
+      salvarMemoria(p, resposta);
+      return resposta;
+
+    } catch (error) {
+      return "Ops! Não consegui acessar a internet agora, mas vou tentar de novo depois.";
+    }
+  }
+
+  // Função para falar texto via Web Speech API
+  function falar(texto) {
+    if (!synth) return;
+    if (synth.speaking) synth.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(texto);
+    utterance
